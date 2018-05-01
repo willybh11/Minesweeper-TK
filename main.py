@@ -10,10 +10,6 @@ class TK(Frame):
         self.grid()
         self.setup()
 
-        for i in range(8):
-            for j in range(8):
-                self.playGrid[i][j].click()
-
     def winCheck(self):
         marked = 0
         cleared = 0
