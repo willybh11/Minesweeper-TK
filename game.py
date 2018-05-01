@@ -1,5 +1,3 @@
-from random import randint
-
 class GridSquare:
 
     def __init__(self,coords,button):
