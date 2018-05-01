@@ -10,6 +10,10 @@ class TK(Frame):
         self.grid()
         self.setup()
 
+        for i in range(8):
+            for j in range(8):
+                self.playGrid[i][j].click()
+
     def winCheck(self):
         marked = 0
         cleared = 0
@@ -20,19 +24,27 @@ class TK(Frame):
                     marked += 1
                 if sq.isCleared:
                     cleared += 1
-        if marked + cleared == 64:
+        if marked + cleared == 64 and marked == 10:
             for i in range(8):
                 for j in range(8):
                     if not self.playGrid[i][j].isMine:
                         self.playGrid[i][j].button['fg'] = 'green'
                     self.WIN['fg'] = 'green'
         else:
+            for i in range(8):
+                for j in range(8):
+                    sq = self.playGrid[i][j]
+                    if sq.isMine and sq.isCleared:
+                        for k in range(8):
+                            for l in range(8):
+                                self.playGrid[k][l].button['fg'] = 'red'
             self.WIN['fg'] = 'red'
 
     def doNothing(self):
         pass
 
     def clearMode(self):
+        self.winCheck()
         self.CLEAR['fg'] = 'blue'
         self.MARK['fg'] = 'black'
         self.UNMARK['fg'] = 'black'
@@ -42,6 +54,7 @@ class TK(Frame):
                 square.clickMode = 'clear'
 
     def markMode(self):
+        self.winCheck()
         self.MARK['fg'] = 'blue'
         self.CLEAR['fg'] = 'black'
         self.UNMARK['fg'] = 'black'
@@ -51,6 +64,7 @@ class TK(Frame):
                 square.clickMode = 'mark'
 
     def unmarkMode(self):
+        self.winCheck()
         self.MARK['fg'] = 'black'
         self.CLEAR['fg'] = 'black'
         self.UNMARK['fg'] = 'blue'
@@ -61,12 +75,16 @@ class TK(Frame):
 
     def setMine(self):
         target = [randint(0,7),randint(0,7)]
-        self.playGrid[target[0]][target[1]].isMine = True if self.playGrid[target[0]][target[1]].isMine == False else self.setMine()
+        if self.playGrid[target[0]][target[1]].isMine == False:
+            self.playGrid[target[0]][target[1]].isMine = True
+        else:
+            self.setMine()
 
     def setup(self):
 
         # initialize variables
         self.playGrid = [[],[],[],[],[],[],[],[]]
+        self.mines = 0
 
         # make grid of buttons
         for x in range(8):
@@ -79,8 +97,10 @@ class TK(Frame):
                 self.playGrid[y].append(tmpSquare)
 
         # set mines
-        for i in range(10):
+        n = 0
+        while n < 10:
             self.setMine()
+            n += 1
 
         # assign values to all buttons
         for i in range(8):

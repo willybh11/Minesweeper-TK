@@ -13,18 +13,22 @@ class GridSquare:
         self.clickMode = 'clear'
         self.adjacent = 0
 
+
     def click(self):
         if self.clickMode == 'clear':
             self.isCleared = True
             self.button['fg'] = 'black'
+
             if self.isMine:
                 self.button['text'] = '#' # you would lose here
-            else:
+            elif self.isCleared:
                 self.button['text'] = self.adjacent
+
         elif self.clickMode == 'mark':
             self.button['text'] = 'P'
             self.button['fg'] = 'red'
             self.isMarked = True
+
         elif self.clickMode == 'unmark':
             self.button['text'] = '*'
             self.button['fg'] = 'black'
