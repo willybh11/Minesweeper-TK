@@ -23,7 +23,9 @@ class TK(Frame):
         if marked + cleared == 64:
             for i in range(8):
                 for j in range(8):
-                    self.playGrid[i][j].button['fg'] = 'green'
+                    if not self.playGrid[i][j].isMine:
+                        self.playGrid[i][j].button['fg'] = 'green'
+                    self.WIN['fg'] = 'green'
         else:
             self.WIN['fg'] = 'red'
 
